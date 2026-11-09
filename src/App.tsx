@@ -148,11 +148,19 @@ const exerciseTypeOptions: Array<{ value: string; label: string; emoji: string }
   { value: "增肌力量", label: "增肌力量", emoji: "💪" },
   { value: "平衡稳定", label: "平衡稳定", emoji: "⚖️" }
 ];
+const getAsset = (path: string) => {
+  if (!path) return path;
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) return path;
+  const base = import.meta.env.BASE_URL || "/";
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  return `${base}${cleanPath}`;
+};
+
 const onboardingIllustrations = [
-  "/assets/ip/ip-1.png",
-  "/assets/ip/ip-2.png",
-  "/assets/ip/ip-3.png",
-  "/assets/ip/ip-4.png"
+  getAsset("/assets/ip/ip-1.png"),
+  getAsset("/assets/ip/ip-2.png"),
+  getAsset("/assets/ip/ip-3.png"),
+  getAsset("/assets/ip/ip-4.png")
 ];
 function areaLabel(area: string) {
   return targetAreaOptions.find((item) => item.value === area)?.label ?? area;
@@ -2968,7 +2976,7 @@ function ProfileScreen({
           <div className="relative">
             <div className="h-16 w-16 overflow-hidden rounded-2xl bg-moss/70 border-2 border-white shadow-md grid place-items-center">
               <img
-                src="/assets/ip/ip-1.png"
+                src={getAsset("/assets/ip/ip-1.png")}
                 alt="吉祥物"
                 className="h-full w-full object-cover"
                 onError={(e) => {

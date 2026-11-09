@@ -32,7 +32,7 @@ export type ExerciseGroup = {
 
 export const exerciseCategories: ExerciseCategory[] = ["肩颈", "上背", "胸肩", "腰背"];
 
-export const exercises: Exercise[] = [
+const rawExercises: Exercise[] = [
   {
     id: "neck_side_tilt_left",
     type: "拉伸",
@@ -442,6 +442,20 @@ export const exercises: Exercise[] = [
     coverImage: "/assets/exercises/covers/lower_back_seated_forward_bend.png"
   }
 ];
+
+const getAsset = (path: string) => {
+  if (!path) return path;
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) return path;
+  const base = import.meta.env.BASE_URL || "/";
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  return `${base}${cleanPath}`;
+};
+
+export const exercises: Exercise[] = rawExercises.map((ex) => ({
+  ...ex,
+  coverImage: getAsset(ex.coverImage),
+  demoPageImage: getAsset(ex.demoPageImage)
+}));
 
 export const pairedExerciseGroups: ExerciseGroup[] = [
   {
